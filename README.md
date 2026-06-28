@@ -32,7 +32,11 @@ A modern, responsive and feature-rich Scientific Calculator built with HTML, CSS
 ---
 
 # 📸 Preview
+## Normal Mode
+![Website Preview](screenshot.png)
 
+## Scietific Mode
+![Website Preview](screenshot1.png)
 
 ---
 
