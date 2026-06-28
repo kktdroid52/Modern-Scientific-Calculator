@@ -33,9 +33,6 @@ A modern, responsive and feature-rich Scientific Calculator built with HTML, CSS
 
 # 📸 Preview
 
-## 🌙 Dark Mode
-
-> Add Screenshot Here
 
 ---
 
