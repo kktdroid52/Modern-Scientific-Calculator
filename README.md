@@ -30,7 +30,10 @@ A modern, responsive and feature-rich Scientific Calculator built with HTML, CSS
 - ⚡ Modern User Experience
 
 ---
-
+# Demo Visit url
+## click it
+- https://kktdroid52.github.io/Modern-Scientific-Calculator/
+---
 # 📸 Preview
 ## Normal Mode
 ![Website Preview](screenshot.png)
