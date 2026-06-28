@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="NeoCalc Pro — A premium glassmorphism calculator with scientific mode, history, and themes." />
+  <meta name="theme-color" content="#0d0d14" />
+  <title>NeoCalc Pro</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ─── Loading Screen ─────────────────────────────────────── -->
+  <div id="loading-screen" role="status" aria-label="Loading NeoCalc Pro">
+    <div class="loader-ring"></div>
+    <div class="loader-logo">NeoCalc <span>Pro</span></div>
+    <div class="loader-sub">Initializing…</div>
+  </div>
+
+  <!-- ─── Animated Background ───────────────────────────────── -->
+  <div class="bg-wrap" aria-hidden="true">
+    <canvas id="particle-canvas"></canvas>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+    <div class="blob blob-4"></div>
+    <div class="blob blob-5"></div>
+  </div>
+
+  <!-- ─── App Shell ─────────────────────────────────────────── -->
+  <div class="app-shell">
+
+    <!-- Top bar -->
+    <header class="top-bar" role="banner">
+      <div class="top-bar-left">
+        <span class="brand">NeoCalc <strong>Pro</strong></span>
+        <div class="live-clock" aria-live="polite">
+          <span id="clock-time">00:00:00</span>
+          <span id="clock-date">Mon 01 Jan</span>
+        </div>
+      </div>
+      <div class="top-bar-right">
+        <!-- Accent picker -->
+        <div class="accent-picker" role="group" aria-label="Accent color">
+          <button class="accent-dot accent-orange active" data-accent="orange" aria-label="Orange accent" title="Orange"></button>
+          <button class="accent-dot accent-cyan"   data-accent="cyan"   aria-label="Cyan accent"   title="Cyan"></button>
+          <button class="accent-dot accent-violet" data-accent="violet" aria-label="Violet accent" title="Violet"></button>
+          <button class="accent-dot accent-rose"   data-accent="rose"   aria-label="Rose accent"   title="Rose"></button>
+          <button class="accent-dot accent-green"  data-accent="green"  aria-label="Green accent"  title="Green"></button>
+        </div>
+        <!-- Mute -->
+        <button class="icon-btn" id="mute-btn" aria-label="Toggle sound" title="Sound on/off">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path id="sound-wave2" d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+        </button>
+        <!-- Fullscreen -->
+        <button class="icon-btn" id="fullscreen-btn" aria-label="Toggle fullscreen" title="Fullscreen">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </button>
+        <!-- History -->
+        <button class="icon-btn" id="history-toggle-btn" aria-label="Open history" title="History">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 1 .5 4"/><polyline points="3 16 3 11 8 11"/></svg>
+        </button>
+        <!-- Theme -->
+        <button class="icon-btn theme-btn" id="theme-btn" aria-label="Toggle light/dark theme" title="Toggle theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main layout -->
+    <main class="main-layout" role="main">
+
+      <!-- ─── Calculator Card ──────────────────────────────── -->
+      <section class="calc-card" aria-label="Calculator">
+        <div class="glass-shine" aria-hidden="true"></div>
+
+        <!-- Mode & Memory bar -->
+        <div class="mode-bar">
+          <div class="mode-toggle" role="group" aria-label="Calculator mode">
+            <button class="mode-btn active" id="mode-standard" aria-pressed="true">Standard</button>
+            <button class="mode-btn"        id="mode-scientific" aria-pressed="false">Scientific</button>
+          </div>
+          <div class="memory-bar" role="group" aria-label="Memory functions">
+            <button class="mem-btn" data-mem="mc"  aria-label="Memory clear">MC</button>
+            <button class="mem-btn" data-mem="mr"  aria-label="Memory recall">MR</button>
+            <button class="mem-btn" data-mem="ms"  aria-label="Memory store">MS</button>
+            <button class="mem-btn" data-mem="m+"  aria-label="Memory add">M+</button>
+            <button class="mem-btn" data-mem="m-"  aria-label="Memory subtract">M−</button>
+          </div>
+        </div>
+
+        <!-- Display -->
+        <div class="display-wrap" aria-label="Calculator display">
+          <div class="display-secondary" id="display-expr" aria-live="polite" aria-label="Expression"></div>
+          <div class="display-primary-wrap">
+            <div class="display-primary" id="display-main" aria-live="assertive" aria-label="Result">0</div>
+            <div class="display-cursor" aria-hidden="true"></div>
+          </div>
+          <div class="display-meta">
+            <span class="mem-indicator" id="mem-indicator" aria-label="Memory stored"></span>
+            <div class="display-actions">
+              <button class="display-action-btn" id="copy-btn" aria-label="Copy answer" title="Copy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              </button>
+              <button class="display-action-btn" id="share-btn" aria-label="Share result" title="Share">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats bar -->
+        <div class="stats-bar">
+          <span>Calculations: <strong id="stat-count">0</strong></span>
+          <span>Session: <strong id="stat-session">0</strong></span>
+          <span class="stat-mem-val" id="stat-mem-val"></span>
+        </div>
+
+        <!-- ─── Scientific Panel ───────────────────────────── -->
+        <div class="scientific-panel" id="scientific-panel" aria-hidden="true">
+          <div class="sci-grid" role="group" aria-label="Scientific functions">
+            <button class="btn btn-sci" data-action="sin"    aria-label="sine">sin</button>
+            <button class="btn btn-sci" data-action="cos"    aria-label="cosine">cos</button>
+            <button class="btn btn-sci" data-action="tan"    aria-label="tangent">tan</button>
+            <button class="btn btn-sci" data-action="asin"   aria-label="arcsine">asin</button>
+            <button class="btn btn-sci" data-action="acos"   aria-label="arccosine">acos</button>
+            <button class="btn btn-sci" data-action="atan"   aria-label="arctangent">atan</button>
+            <button class="btn btn-sci" data-action="pi"     aria-label="pi">π</button>
+            <button class="btn btn-sci" data-action="e"      aria-label="Euler's number">e</button>
+            <button class="btn btn-sci" data-action="sqrt"   aria-label="square root">√</button>
+            <button class="btn btn-sci" data-action="cbrt"   aria-label="cube root">∛</button>
+            <button class="btn btn-sci" data-action="sq"     aria-label="square">x²</button>
+            <button class="btn btn-sci" data-action="cube"   aria-label="cube">x³</button>
+            <button class="btn btn-sci" data-action="pow"    aria-label="power">xʸ</button>
+            <button class="btn btn-sci" data-action="log"    aria-label="log base 10">log</button>
+            <button class="btn btn-sci" data-action="ln"     aria-label="natural log">ln</button>
+            <button class="btn btn-sci" data-action="abs"    aria-label="absolute value">|x|</button>
+            <button class="btn btn-sci" data-action="fact"   aria-label="factorial">n!</button>
+            <button class="btn btn-sci" data-action="inv"    aria-label="reciprocal">1/x</button>
+            <button class="btn btn-sci" data-action="mod"    aria-label="modulo">mod</button>
+            <button class="btn btn-sci" data-action="exp"    aria-label="scientific notation">EXP</button>
+            <button class="btn btn-sci" data-action="floor"  aria-label="floor">⌊x⌋</button>
+            <button class="btn btn-sci" data-action="ceil"   aria-label="ceiling">⌈x⌉</button>
+            <button class="btn btn-sci" data-action="round"  aria-label="round">rnd</button>
+            <button class="btn btn-sci" data-action="rand"   aria-label="random">rnd#</button>
+            <button class="btn btn-sci" data-action="open-paren"  aria-label="open parenthesis">(</button>
+            <button class="btn btn-sci" data-action="close-paren" aria-label="close parenthesis">)</button>
+          </div>
+        </div>
+
+        <!-- ─── Standard Buttons ──────────────────────────── -->
+        <div class="btn-grid" role="group" aria-label="Calculator buttons">
+
+          <!-- Row 1 -->
+          <button class="btn btn-fn btn-clear"    data-action="clear"    aria-label="All clear">AC</button>
+          <button class="btn btn-fn btn-sign"     data-action="sign"     aria-label="Toggle sign">+/−</button>
+          <button class="btn btn-fn btn-percent"  data-action="percent"  aria-label="Percent">%</button>
+          <button class="btn btn-op"              data-action="÷"        aria-label="Divide">÷</button>
+
+          <!-- Row 2 -->
+          <button class="btn btn-num" data-action="7" aria-label="7">7</button>
+          <button class="btn btn-num" data-action="8" aria-label="8">8</button>
+          <button class="btn btn-num" data-action="9" aria-label="9">9</button>
+          <button class="btn btn-op"  data-action="×" aria-label="Multiply">×</button>
+
+          <!-- Row 3 -->
+          <button class="btn btn-num" data-action="4" aria-label="4">4</button>
+          <button class="btn btn-num" data-action="5" aria-label="5">5</button>
+          <button class="btn btn-num" data-action="6" aria-label="6">6</button>
+          <button class="btn btn-op"  data-action="-" aria-label="Subtract">−</button>
+
+          <!-- Row 4 -->
+          <button class="btn btn-num" data-action="1" aria-label="1">1</button>
+          <button class="btn btn-num" data-action="2" aria-label="2">2</button>
+          <button class="btn btn-num" data-action="3" aria-label="3">3</button>
+          <button class="btn btn-op"  data-action="+" aria-label="Add">+</button>
+
+          <!-- Row 5 -->
+          <button class="btn btn-num btn-zero" data-action="0"   aria-label="0">0</button>
+          <button class="btn btn-num"          data-action="."   aria-label="Decimal point">.</button>
+          <button class="btn btn-fn btn-del"   data-action="del" aria-label="Delete last character">⌫</button>
+          <button class="btn btn-eq"           data-action="="   aria-label="Equals">=</button>
+
+        </div>
+      </section><!-- /.calc-card -->
+
+      <!-- ─── History Panel ────────────────────────────────── -->
+      <aside class="history-panel" id="history-panel" aria-label="Calculation history" aria-hidden="true">
+        <div class="history-header">
+          <h2>History</h2>
+          <button class="history-clear-btn" id="clear-history-btn" aria-label="Clear all history">Clear all</button>
+        </div>
+        <div class="history-list" id="history-list" role="list" aria-live="polite">
+          <div class="history-empty" id="history-empty">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="12 8 12 12 14 14"/><path d="M3.05 11a9 9 0 1 1 .5 4"/><polyline points="3 16 3 11 8 11"/></svg>
+            <p>No calculations yet</p>
+          </div>
+        </div>
+      </aside>
+
+    </main><!-- /.main-layout -->
+  </div><!-- /.app-shell -->
+
+  <!-- ─── Toast ─────────────────────────────────────────────── -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+  <!-- ─── Confetti Canvas ───────────────────────────────────── -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
