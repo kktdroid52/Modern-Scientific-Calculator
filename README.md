@@ -31,6 +31,14 @@ A modern, responsive and feature-rich Scientific Calculator built with HTML, CSS
 
 ---
 
+# 📸 Preview
+
+## 🌙 Dark Mode
+
+> Add Screenshot Here
+
+---
+
 ## 🧮 Calculator Features
 
 - Standard Calculator
@@ -55,20 +63,7 @@ A modern, responsive and feature-rich Scientific Calculator built with HTML, CSS
 - atan
 - log
 - ln
-- √ Square Root
-- x²
-- x³
-- xʸ
-- π
-- e
-- Factorial
-- Absolute Value
-- Reciprocal
-- Floor
-- Ceil
-- Round
-
----
+- And many more
 
 ## 🚀 Additional Features
 
@@ -84,13 +79,7 @@ A modern, responsive and feature-rich Scientific Calculator built with HTML, CSS
 
 ---
 
-# 📸 Preview
 
-## 🌙 Dark Mode
-
-> Add Screenshot Here
-
----
 
 ## ☀️ Light Mode
 
@@ -156,11 +145,8 @@ or run using **Live Server**.
 # 📱 Responsive
 
 ✅ Desktop
-
 ✅ Laptop
-
 ✅ Tablet
-
 ✅ Mobile
 
 ---
@@ -198,7 +184,7 @@ This project is licensed under the **MIT License**.
 
 # 👨‍💻 Author
 
-### Alex
+### Kingshuk
 
 GitHub:
 https://github.com/kktdroid52
@@ -219,6 +205,6 @@ If you like this project,
 
 <p align="center">
 
-Made with ❤️ by Alex
+Made with ❤️ by KktDroid52
 
 </p>
